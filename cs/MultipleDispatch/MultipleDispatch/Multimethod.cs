@@ -11,7 +11,7 @@ namespace MultipleDispatch
     /// based on the runtime type of all arguments.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    class Multimethod
+    public class Multimethod
     {
         /// <summary>
         /// Caches results of method lookups for the given target type and method signature.
