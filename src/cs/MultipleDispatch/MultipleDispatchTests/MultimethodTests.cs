@@ -21,19 +21,19 @@ namespace MultipleDispatchTests
         public void CallNonoverloaded()
         {
             // without arguments
-            Assert.AreEqual("test", Multimethod.Call<string>("test", "ToString"));
-            Assert.AreEqual("1234", Multimethod.Call<string>(1234, "ToString"));
+            Assert.AreEqual("test", "test".Call<string>("ToString"));
+            Assert.AreEqual("1234",1234.Call<string>("ToString"));
 
             // with arguments
-            Assert.AreEqual(64, Multimethod.Call<double>(target, "Square", 8.0));
-            Assert.AreEqual("hello, world!", Multimethod.Call<string>(target, "Append", "hello, ", "world!"));
+            Assert.AreEqual(64, target.Call<double>("Square", 8.0));
+            Assert.AreEqual("hello, world!", target.Call<string>("Append", "hello, ", "world!"));
 
             // now test calls that should fail
 
             // without arguments
             try
             {
-                Multimethod.Call<string>("test", "ToString", 1); // spurious argument
+                "test".Call<string>("ToString", 1); // spurious argument
                 Assert.Fail("Expected multimethod to fail due to a spurious argument");
             }
             catch (NoMatchingMethodException)
@@ -42,7 +42,7 @@ namespace MultipleDispatchTests
 
             try
             {
-                Multimethod.Call<int>(1234, "ToString"); // wrong return type
+                1234.Call<int>("ToString"); // wrong return type
                 Assert.Fail("Expected multimethod to fail due to a wrong return type");
             }
             catch (NoMatchingMethodException)
@@ -51,7 +51,7 @@ namespace MultipleDispatchTests
 
             try
             {
-                Multimethod.Call<double>(target, "Square", "8"); // wrong argument type
+                target.Call<double>("Square", "8"); // wrong argument type
                 Assert.Fail("Expected multimethod to fail due to a wrong argument type");
             }
             catch (NoMatchingMethodException)
@@ -63,29 +63,29 @@ namespace MultipleDispatchTests
         public void CallOverloaded()
         {           
             Assert.AreEqual("[INT(1), FLOAT(2), INT(3), ???, STRING(test), [STRING(hello), INT(1234)], DOUBLE(6), STRING(test2)] // test object",
-                Multimethod.Call<string>(pp, "Print", complicatedObject, "test object")); 
+                pp.Call<string>("Print", complicatedObject, "test object")); 
         }
 
         [Test]
         public void CallVoid()
         {
-            Multimethod.Call(target, "SaySomething");
+            target.Call("SaySomething");
             Assert.AreEqual("hi", target.Message);
 
-            Multimethod.Call(target, "SaySomething", "hello");
+            target.Call("SaySomething", "hello");
             Assert.AreEqual("hello", target.Message);
 
-            Multimethod.Call(target, "SaySomething", 1234);
+            target.Call("SaySomething", 1234);
             Assert.AreEqual("1234", target.Message);
         }
 
         [Test]
         public void CallWithNull()
         {
-            Multimethod.Call(target, "SaySomething", new object[] { null });
+            target.Call("SaySomething", new object[] { null });
             Assert.AreEqual(null, target.Message);
 
-            Assert.AreEqual("hi", Multimethod.Call<string>(target, "Append", "hi", null));
+            Assert.AreEqual("hi", target.Call<string>("Append", "hi", null));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace MultipleDispatchTests
             var start = DateTime.Now;
             for (int i = 0; i < RUNS; i++)
             {
-                Multimethod.Call<string>(pp, "Print", complicatedObject);
+                pp.Call<string>("Print", complicatedObject);
             }
             double elapsed = (DateTime.Now - start).TotalSeconds;
             Console.WriteLine("Microbenchmark operations per second: {0}", (double)RUNS / elapsed);

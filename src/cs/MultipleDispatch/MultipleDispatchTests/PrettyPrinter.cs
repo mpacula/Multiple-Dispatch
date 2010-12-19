@@ -16,7 +16,7 @@ namespace MultipleDispatchTests
 
         public string Print(object val, string comment)
         {
-            return Multimethod.Call<string>(this, "Print", val) + " // " + comment;
+            return this.Call<string>("Print", val) + " // " + comment;
         }
 
         public string Print(float value)
@@ -49,7 +49,7 @@ namespace MultipleDispatchTests
                 if (!first)
                     result += ", ";
 
-                result += Multimethod.Call<string>(this, "Print", obj);
+                result += this.Call<string>("Print", obj);
 
                 if (first) first = false;
             }

@@ -11,7 +11,7 @@ namespace MultipleDispatch
     /// based on the runtime type of all arguments.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Multimethod
+    public static class Multimethod
     {
         /// <summary>
         /// Caches results of method lookups for the given target type and method signature.
@@ -27,18 +27,18 @@ namespace MultipleDispatch
         /// <param name="methodName">case-sensitive name of the method to invoke</param>
         /// <param name="arguments">arguments to invoke the method with</param>
         /// <returns>result of the method invocation</returns>
-        public static TRet Call<TRet>(object target, string methodName, params object[] arguments)
+        public static TRet Call<TRet>(this object target, string methodName, params object[] arguments)
         {
             return (TRet)Dispatch(target, methodName, typeof(TRet), arguments);
         }
-
+        
         /// <summary>
         /// Invokes a void method on the target object based on the runtime type of all arguments.
         /// </summary>
         /// <param name="target">target object on which the method will be invoked</param>
         /// <param name="methodName">case-sensitive name of the method to invoke</param>
         /// <param name="arguments">arguments to invoke the method with</param>
-        public static void Call(object target, string methodName, params object[] arguments)
+        public static void Call(this object target, string methodName, params object[] arguments)
         {
             Dispatch(target, methodName, typeof(void), arguments);
         }
