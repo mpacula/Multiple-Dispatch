@@ -15,7 +15,7 @@ import java.util.Map;
  * @author "Maciej Pacula (maciej.pacula@gmail.com)"
  *
  */
-class Multimethod {
+public class Multimethod {
 	/**
 	 * Caches results of method lookups for the given target type and method signature. Speeds up method invocation.
 	 */
